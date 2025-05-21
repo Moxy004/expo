@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DialektoGO</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#000000">
+  <script>
+    
+    import { initializeApp } from "firebase/app";
+    import { getAnalytics } from "firebase/analytics";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA_Rb-l3s025f8iE06DP3Yp0LRHFnyN_aQ",
+      authDomain: "pwa---dialektogo.firebaseapp.com",
+      projectId: "pwa---dialektogo",
+      storageBucket: "pwa---dialektogo.firebasestorage.app",
+      messagingSenderId: "97002418234",
+      appId: "1:97002418234:web:c890e48535d766b2a60503",
+      measurementId: "G-JJ5DJJF6NE"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+        if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/service-worker.js')
+          .then((reg) => console.log('Service Worker registered:', reg))
+          .catch((err) => console.log('Service Worker registration failed:', err));
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="images/logo.png" alt="Logo">
+      <span class="title">
+        <span class="blue">Dialekto</span><span class="orange">GO</span>
+      </span>
+    </div>
+    <div class="lang-selector">
+      <img src="https://img.icons8.com/ios-filled/50/000000/globe--v1.png" alt="Language">
+      <select>
+        <option>ENG</option>
+        <!-- Add more options as needed -->
+      </select>
+    </div>
+  </div>
+
+   
+
+  <main class="main-content">
+    <div class="text-section">
+      <h1><span class="blue">Dialekto</span><span class="orange">GO</span></h1>
+      <p>Learn Tagalog the best way possible.</p>
+      <div class="buttons">
+        <a href="login.html"class="blue-btn">I HAVE AN ACCOUNT</a>
+        <a href="signup.html"class="orange-btn">I'M NEW TO THIS</a>
+      </div>
+    </div>
+    <div class="mascot">
+      <img src="images/mascot.png" alt="Mascot Reading Book">
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | DialektoGO</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo">
+          <span class="title">
+            <span class="blue">Dialekto</span><span class="orange">GO</span>
+          </span>
+        </div>
+        <div class="lang-selector">
+          <img src="https://img.icons8.com/ios-filled/50/000000/globe--v1.png" alt="Language">
+          <select>
+            <option>ENG</option>
+            <!-- Add more options as needed -->
+          </select>
+        </div>
+      </div>
+
+    <div class="go-back">
+        <a href="index.html" class="orange">&lt; GO BACK</a>
+      </div>
+
+      <div class="password-container" id="passwordSection" style="display: none;">
+    <h2 class="password-title">CREATE PASSWORD</h2>
+    <p class="password-instructions">
+        Enter a password. It should have at least 8 characters.
+    </p>
+    <form class="password-form">
+        <input type="password" placeholder="Enter password" required>
+        <input type="password" placeholder="Confirm password" required>
+        <button type="submit">SIGN UP</button>
+    </form>
+</div>
+
+      <div class="verification-container" id="verificationSection">
+        <h2 class="verification-title">SIGN UP</h2>
+        <p class="verification-instructions">
+            A verification code has been sent to you. <br>
+            Please check your e-mail and enter the provided code to verify.
+        </p>
+        <form class="verification-form">
+            <input type="text" placeholder="Enter code" required>
+            <a href="#" class="resend-link">Resend code</a>
+            <button type="button" id="verifyBtn">CONTINUE</button>
+        </form>
+    </div>
+
+    <div class="signup-container" id="signupSection">
+    <div class="signup-title">SIGN UP</div>
+    <form class="signup-form">
+        <input type="email" placeholder="E-mail" required>
+        <input type="text" placeholder="Username" required>
+        <div class="birthday-label">BIRTHDAY</div>
+        <div class="birthday-group">
+            <input type="text" placeholder="DD" maxlength="2" required>
+            <input type="text" placeholder="MM" maxlength="2" required>
+            <input type="text" placeholder="YYYY" maxlength="4" required>
+            <span class="calendar-icon">&#128197;</span>
+        </div>
+        <!-- Hidden Date Picker -->
+        <input type="date" id="hiddenDatePicker">
+        <button type="submit" class="continue-btn" id="signupContinueBtn">CONTINUE</button>
+        <div class="login-link">
+            Already have an account? <a href="login.html">LOG IN</a>
+        </div>
+    </form>
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html>

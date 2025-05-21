@@ -1,28 +1,9 @@
 {
-  "name": "pwa-dialektogo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node public/server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Moxy004/expo.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Moxy004/expo/issues"
-  },
-  "homepage": "https://github.com/Moxy004/expo#readme",
   "dependencies": {
+    "axios": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "groq-sdk": "^0.22.0"
+    "groq-sdk": "^0.21.0"
   }
 }

@@ -1,0 +1,267 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Caprasimo", serif;
+  font-weight: lighter;
+  font-style: normal;
+}
+
+body {
+  background: linear-gradient(to top, #81d4fa, #ffffff);
+  height: 100vh;
+
+}
+
+
+.header {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.blue {
+  color: #0077cc;
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.orange {
+  font-size: 29px;
+  color: #f4a300;
+  text-decoration: none;
+}
+
+.lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lang-selector img {
+  height: 20px;
+}
+
+/* ----------------------------Main dictionary--------------------- */
+.Dropbar_filter {
+  display: flex;
+  align-items: center;
+}
+
+.Dropbar_filter select {
+  padding: 3px;
+  color: gray;
+  font-size: 16px;
+  border-radius: 4px;
+  border: transparent;
+}
+
+.header_wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5rem;
+}
+
+.home_btn {
+  background-color: white;
+  padding: 20px;
+  border-radius: 30rem;
+  display: flex;
+  align-items: center;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.home_btn img {
+  height: 35px;
+
+
+}
+
+
+
+
+.Text_wrapper {
+  color: rgba(255, 193, 100, 1);
+  text-align: center;
+  margin-top: 10px;
+}
+
+.dictionary_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  max-height: 1500px;
+  margin: 40px auto;
+}
+
+.column {
+  width: 25%;
+  min-width: 200px;
+  margin: 2rem;
+}
+
+.word-entry {
+  margin-bottom: 1rem;
+}
+
+.word-btn {
+  background-color: rgba(183, 49, 100, 1);
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 15px;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.word-btn:hover {
+  background-color: #a02858;
+}
+
+.meaning-box {
+  background-color: #ffe5ec;
+  color: #b93164;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  display: none;
+  font-size: 16px;
+}
+
+.Meaning_Wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0 3rem 0;
+  color: rgb(210, 158, 80);
+
+}
+
+.lesson-feedback {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 10px 30px;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: visible;
+}
+
+.lesson-face {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: -20px;
+  margin-bottom: -20px;
+  overflow: hidden;
+}
+
+.lesson-face img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.Back,
+.Next {
+  color: #0077cc;
+  font-size: 15pt;
+  text-align: center;
+  align-items: center;
+}
+
+.meaning-box {
+  background: #f9f9f9;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  display: none;
+}
+
+.meaning-box .etymology,
+.meaning-box .definition {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.meaning-box .etymology {
+  color: #cd7598;
+}
+
+.vol {
+  width: 20px;
+  height: 20px;
+}
+
+.meaning-box {
+  display: none;
+  margin-top: 8px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.meaning-box.visible {
+  display: block;
+}
+
+.word-entry {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.meaning-box {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  width: 200px; /* Or set a fixed width */
+}
+
+.meaning-box.visible {
+  display: block;
+}

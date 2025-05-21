@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DialektoGO - Greeting People</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="/manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Hammersmith+One&display=swap" rel="stylesheet">
+</head>
+
+<style>
+    body{
+        background: none;
+    }
+</style>
+<body>
+
+<div class="header">
+    <div class="logo">
+      <img src="images/logo.png" alt="Logo">
+      <span class="title">
+        <span class="blue">Dialekto</span><span class="orange">GO</span>
+      </span>
+    </div>
+    <div class="lang-selector">
+      <img src="https://img.icons8.com/ios-filled/50/000000/globe--v1.png" alt="Language">
+      <select>
+        <option>ENG</option>
+        <!-- Add more options as needed -->
+      </select>
+    </div>
+  </div>
+
+<div class="wrapper">
+        <a href="" class="orange"><span class="blue">&lt;</span> GO BACK</a>
+        <progress class="progress_bar" value="32" max="100" ></progress>
+        <div></div>
+    </div>
+
+<script>
+  let voices = [];
+
+  function setUpVoice() {
+    voices = speechSynthesis.getVoices();
+    const tagalogVoice = voices.find(voice =>
+      voice.lang === "fil-PH" || voice.lang === "tl-PH" || voice.name.toLowerCase().includes("filipino")
+    );
+
+    const utterance = new SpeechSynthesisUtterance("Kumusta ka?");
+    utterance.lang = "fil-PH";
+    utterance.pitch = 1.2;
+    utterance.rate = 0.95;
+    utterance.volume = 1;
+
+    if (tagalogVoice) {
+      utterance.voice = tagalogVoice;
+    }
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utterance);
+  }
+
+  function playAudio() {
+    if (speechSynthesis.getVoices().length === 0) {
+      speechSynthesis.addEventListener('voiceschanged', setUpVoice);
+    } else {
+      setUpVoice();
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DialektoGO</title>
+  <link rel="stylesheet" href="dictionary.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/js-circle-progress/dist/circle-progress.min.js" type="module"></script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo">
+      <img src="../images/logo.png" alt="Logo" />
+      <span class="title">
+        <span class="blue">Dialekto</span><span class="orange">GO</span>
+      </span>
+    </div>
+    <div class="lang-selector">
+      <img src="https://img.icons8.com/ios-filled/50/000000/globe--v1.png" alt="Language" />
+      <select>
+        <option>ENG</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="header_wrapper">
+    <a href="../home.html" class="home_btn"><img src="../icons/home.png" alt="" /></a>
+    <div class="Text_wrapper">
+      <h2>Dictionary</h2>
+      <h3>Click on the word to show its meaning</h3>
+    </div>
+    <div class="Dropbar_filter">
+      <select>
+        <option>Noun</option>
+        <option>Verb</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="dictionary-slide" class="dictionary_wrapper"></div>
+
+  <div class="lesson-feedback">
+    <div class="Back" id="backBtn">
+      <p>&lt; BACK</p>
+    </div>
+    <div class="lesson-face" id="aiic">
+      <img src="/image.png" alt="Neutral Face" />
+    </div>
+    <div class="Next" id="nextBtn">
+      <p>NEXT &gt;</p>
+    </div>
+  </div>
+
+  <script>
+    const slides = [
+      [
+        [
+          { word: "gabi", etymology: "From Proto-Malayo-Polynesian <em>gabii</em>", meaning: "night / evening" },
+          { word: "kumusta", etymology: "From Spanish <em>cómo está</em>", meaning: "hello / how are you?" },
+          { word: "umaga", etymology: "Native Tagalog origin", meaning: "morning" }
+        ],
+        [
+          { word: "araw", etymology: "From Proto-Philippine <em>ʔáRaw</em>", meaning: "day" },
+          { word: "paalam", etymology: "From <em>pa-</em> (causative) + <em>alam</em>", meaning: "goodbye" },
+          { word: "salamat", etymology: "From Arabic <em>salāmah</em>", meaning: "thank you" }
+        ],
+        [
+          { word: "opo", etymology: "From <em>oo</em> + <em>po</em>", meaning: "yes (polite)" },
+          { word: "patawad", etymology: "From <em>patawad</em>", meaning: "sorry" },
+          { word: "pasensya", etymology: "From Spanish <em>paciencia</em>", meaning: "excuse me / sorry" }
+        ]
+      ],
+      [
+        [
+          { word: "kamusta", etymology: "From Spanish '¿cómo está?'", meaning: "How are you? / Are you okay?" },
+          { word: "salamat", etymology: "From Arabic 'salāmat' (سلامة)", meaning: "Thank you" },
+          { word: "opo", etymology: "Combination of 'oo' (yes) and 'po'", meaning: "Yes (polite)" }
+        ],
+        [
+          { word: "hindi po", etymology: "From 'hindi' (no) and 'po'", meaning: "No (polite)" },
+          { word: "po", etymology: "Derived from 'apo'", meaning: "Politeness particle used to show respect" },
+          { word: "ako", etymology: "From Proto-Austronesian *aku", meaning: "I / Me" }
+        ],
+        [
+          { word: "ikaw", etymology: "From Proto-Austronesian *ikaw", meaning: "You (singular)" },
+          { word: "siya", etymology: "From Proto-Austronesian *siya", meaning: "He / She / They (singular)" },
+          { word: "kami", etymology: "From Proto-Austronesian *kami (exclusive)", meaning: "We / Us (excluding the person spoken to)" }
+        ]
+      ],
+      [
+        [
+          { word: "tayo", etymology: "From Proto-Austronesian *kita (inclusive)", meaning: "We / Us (including the person spoken to)" },
+          { word: "kayo", etymology: "From Proto-Austronesian *kamu", meaning: "You (plural)" },
+          { word: "sila", etymology: "From Proto-Austronesian *sida", meaning: "They / Them" }
+        ],
+        [
+          { word: "ako si ___", etymology: "Combines 'ako' and 'si'", meaning: "I am ___" },
+          { word: "ikaw si ___?", etymology: "Combines 'ikaw' and 'si'", meaning: "Are you ___?" },
+          { word: "magandang umaga", etymology: "'maganda' + 'umaga'", meaning: "Good morning" }
+        ],
+        [
+          { word: "magandang tanghali", etymology: "'maganda' + 'tanghali'", meaning: "Good noon" },
+          { word: "magandang hapon", etymology: "'maganda' + 'hapon'", meaning: "Good afternoon" },
+          { word: "magandang gabi", etymology: "'maganda' + 'gabi'", meaning: "Good evening" }
+        ]
+      ],
+      [
+        [
+          { word: "kumusta?", etymology: "From Spanish '¿cómo está?'", meaning: "How are you?" },
+          { word: "mabuti", etymology: "From root 'buti'", meaning: "Good / Fine" },
+          { word: "ayos lang", etymology: "'Ayos' + 'lang'", meaning: "Just fine / Okay" }
+        ],
+        [
+          { word: "ikaw?", etymology: "Used as return question", meaning: "And you?" },
+          { word: "paalam", etymology: "From 'alam'", meaning: "Goodbye / Farewell" },
+          { word: "anong pangalan mo?", etymology: "'ano' + '-ng' + 'pangalan' + 'mo'", meaning: "What is your name?" }
+        ],
+        [
+          { word: "ako si [pangalan]", etymology: "'ako' + 'si' + [name]", meaning: "I am [name]" },
+          { word: "ilang taon ka na?", etymology: "'ilang' + 'taon' + 'ka' + 'na'", meaning: "How old are you?" },
+          { word: "saan ka nakatira?", etymology: "'saan' + 'ka' + 'nakatira'", meaning: "Where do you live?" }
+        ]
+      ],
+      [
+        [
+          { word: "taga saan ka?", etymology: "'taga' + 'saan' + 'ka'", meaning: "Where are you from?" },
+          { word: "oo", etymology: "Native Tagalog origin", meaning: "Yes" },
+          { word: "hindi", etymology: "From Proto-Philippine *hindiq", meaning: "No / Not" }
+        ],
+        [
+          { word: "pasensya na", etymology: "From Spanish 'paciencia'", meaning: "Sorry / Please be patient" },
+          { word: "pakiulit", etymology: "'paki-' + 'ulit'", meaning: "Please repeat" },
+          { word: "hindi ko alam", etymology: "'hindi' + 'ko' + 'alam'", meaning: "I don’t know" }
+        ],
+        [
+          { word: "isa", etymology: "From Proto-Austronesian *isa", meaning: "One" },
+          { word: "dalawa", etymology: "From Proto-Austronesian *duSa", meaning: "Two" },
+          { word: "tatlo", etymology: "From Proto-Austronesian *telu", meaning: "Three" }
+        ]
+      ],
+      [
+        [
+          { word: "apat", etymology: "From Proto-Austronesian *Sepat", meaning: "Four" },
+          { word: "lima", etymology: "From Proto-Austronesian *lima", meaning: "Five" },
+          { word: "anim", etymology: "From Proto-Austronesian *enem", meaning: "Six" }
+        ],
+        [
+          { word: "pito", etymology: "From Proto-Austronesian *pitu", meaning: "Seven" },
+          { word: "walo", etymology: "From Proto-Austronesian *walu", meaning: "Eight" },
+          { word: "siyam", etymology: "From Proto-Austronesian *Siwa", meaning: "Nine" }
+        ],
+        [
+          { word: "sampu", etymology: "From Proto-Austronesian *sa-puluq", meaning: "Ten" }
+        ]
+      ]
+    ];
+
+    let currentSlideIndex = 0;
+    const dictionarySlide = document.getElementById("dictionary-slide");
+
+    function renderSlide(index) {
+      dictionarySlide.innerHTML = '';
+      slides[index].forEach(columnData => {
+        const column = document.createElement("div");
+        column.className = "column";
+
+        columnData.forEach(entry => {
+          const wordEntry = document.createElement("div");
+          wordEntry.className = "word-entry";
+
+          const wordBtn = document.createElement("button");
+          wordBtn.className = "word-btn";
+          wordBtn.innerHTML = `${entry.word} <img class="vol" src="../icons/vol.png" alt="">`;
+
+          const meaningBox = document.createElement("div");
+          meaningBox.className = "meaning-box";
+          meaningBox.innerHTML = `
+            <div class="etymology"><strong>Etymology:</strong> ${entry.etymology}</div>
+            <div class="meaning"><strong>Meaning:</strong> ${entry.meaning}</div>
+          `;
+          meaningBox.style.display = 'none';
+
+          wordBtn.addEventListener("click", () => {
+            meaningBox.style.display = meaningBox.style.display === 'none' ? 'block' : 'none';
+          });
+
+          wordEntry.appendChild(wordBtn);
+          wordEntry.appendChild(meaningBox);
+          column.appendChild(wordEntry);
+        });
+
+        dictionarySlide.appendChild(column);
+      });
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (currentSlideIndex < slides.length - 1) {
+        currentSlideIndex++;
+        renderSlide(currentSlideIndex);
+      }
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        renderSlide(currentSlideIndex);
+      }
+    });
+
+    // Initial render
+    renderSlide(currentSlideIndex);
+
+    let currentlyOpenBox = null;
+
+    function renderSlide(index) {
+      dictionarySlide.innerHTML = '';
+      slides[index].forEach(columnData => {
+        const column = document.createElement("div");
+        column.className = "column";
+
+        columnData.forEach(entry => {
+          const wordEntry = document.createElement("div");
+          wordEntry.className = "word-entry";
+
+          const wordBtn = document.createElement("button");
+          wordBtn.className = "word-btn";
+          wordBtn.innerHTML = `${entry.word} <img class="vol" src="../icons/vol.png" alt="">`;
+
+          const meaningBox = document.createElement("div");
+          meaningBox.className = "meaning-box";
+          meaningBox.innerHTML = `
+        <div class="etymology"><strong>Etymology:</strong> ${entry.etymology}</div>
+        <div class="meaning"><strong>Meaning:</strong> ${entry.meaning}</div>
+      `;
+
+          wordBtn.addEventListener("click", (e) => {
+            e.stopPropagation(); // prevent click bubbling
+            // Hide any open box
+            if (currentlyOpenBox && currentlyOpenBox !== meaningBox) {
+              currentlyOpenBox.style.display = "none";
+            }
+            // Toggle current
+            meaningBox.style.display = meaningBox.style.display === "block" ? "none" : "block";
+            currentlyOpenBox = meaningBox.style.display === "block" ? meaningBox : null;
+          });
+
+          wordEntry.appendChild(wordBtn);
+          wordEntry.appendChild(meaningBox);
+          column.appendChild(wordEntry);
+        });
+
+        dictionarySlide.appendChild(column);
+      });
+    }
+
+    // Hide box if clicked outside
+    document.addEventListener("click", function (e) {
+      if (currentlyOpenBox) {
+        const isClickInside = currentlyOpenBox.contains(e.target) ||
+          currentlyOpenBox.previousSibling.contains(e.target); // check button too
+        if (!isClickInside) {
+          currentlyOpenBox.style.display = "none";
+          currentlyOpenBox = null;
+        }
+      }
+    });
+
+    // Initial render
+    renderSlide(currentSlideIndex);
+
+    // Slide navigation
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (currentSlideIndex < slides.length - 1) {
+        currentSlideIndex++;
+        renderSlide(currentSlideIndex);
+      }
+    });
+    document.getElementById("backBtn").addEventListener("click", () => {
+      if (currentSlideIndex > 0) {
+        currentSlideIndex--;
+        renderSlide(currentSlideIndex);
+      }
+    });
+
+
+  </script>
+</body>
+
+</html>

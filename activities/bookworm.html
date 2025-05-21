@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up | DialektoGO</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Hammersmith+One&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* Scoped to the game container only */
+        .game-container {
+            font-family: 'Hammersmith One', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+
+        .game-container #board {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            grid-template-rows: repeat(5, 50px);
+            gap: 5px;
+            margin: 20px auto;
+            width: max-content;
+        }
+
+        .game-container .tile {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 28px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            background: white;
+            user-select: none;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .game-container .tile.selected {
+            background-color: #a1e3a1;
+            border-color: #4caf50;
+        }
+
+        .game-container #typingArea {
+            margin: 20px auto;
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .game-container #typingArea .letter {
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            font-size: 28px;
+            border: 2px solid #666;
+            border-radius: 6px;
+            background: #eee;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .game-container #typingArea .letter:hover {
+            background-color: #ccc;
+        }
+
+        .game-container #submitBtn,
+        .game-container #clearBtn,
+        .game-container #showAnswersBtn,
+        .game-container #showPossibleBtn {
+            margin: 10px 5px;
+            padding: 8px 18px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .game-container #submitBtn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .game-container #submitBtn:hover {
+            background-color: #388e3c;
+        }
+
+        .game-container #clearBtn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .game-container #clearBtn:hover {
+            background-color: #c62828;
+        }
+
+        .game-container #showAnswersBtn,
+        .game-container #showPossibleBtn {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .game-container #showAnswersBtn:hover,
+        .game-container #showPossibleBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .game-container #hint {
+            font-style: italic;
+            color: #555;
+            min-height: 24px;
+            margin-top: 10px;
+            min-width: 300px;
+        }
+
+        /* Falling animation */
+        .game-container .falling {
+            animation: fallDown 0.4s ease forwards;
+        }
+
+        @keyframes fallDown {
+            0% {
+                transform: translateY(-60px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .game-container {
+            font-family: 'Hammersmith One', sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .game-container #board {
+            display: grid;
+            grid-template-columns: repeat(5, 50px);
+            grid-template-rows: repeat(5, 50px);
+            gap: 5px;
+        }
+
+        .game-container #typingArea {
+            min-height: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .game-container .button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: -90px;
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="../../images/logo.png" alt="Logo" />
+            <span class="title">
+                <span class="blue">Dialekto</span><span class="orange">GO</span>
+            </span>
+        </div>
+        <div class="lang-selector">
+            <img src="https://img.icons8.com/ios-filled/50/000000/globe--v1.png" alt="Language" />
+            <select>
+                <option>ENG</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+    </div>
+
+    <!-- Wrap the game in a container to scope styles -->
+    <div class="game-container">
+        <h1>Tagalog Bookworm</h1>
+        <div id="board" aria-label="Game board"></div>
+
+        <div id="typingArea" aria-label="Selected letters area"></div>
+
+        <div class="button-group">
+            <button id="submitBtn" aria-label="Submit word">Submit</button>
+            <button id="clearBtn" aria-label="Clear typed word">Clear</button>
+            <button id="showAnswersBtn">Show Correct Answers</button>
+            <div id="answersContainer" style="margin-top:10px; font-weight:bold;"></div>
+            <button id="showPossibleBtn">Show Possible Words</button>
+            <div id="possibleWordsContainer" style="margin-top:10px; font-weight:bold;"></div>
+
+        </div>
+
+
+
+        <div id="hint" aria-live="polite"></div>
+    </div>
+
+    <script>
+        (() => {
+            // 20 predefined Tagalog words and hints (all uppercase)
+            const wordsPool = [
+                { word: "KUMUSTA", hint: "Common greeting, means 'Hello'" },
+                { word: "SALAMAT", hint: "Means 'Thank you'" },
+                { word: "PUSO", hint: "Means 'Heart'" },
+                { word: "BAYANI", hint: "Means 'Hero'" },
+                { word: "MATA", hint: "Means 'Eye'" },
+                { word: "BUWAN", hint: "Means 'Moon'" },
+                { word: "PUNO", hint: "Means 'Tree'" },
+                { word: "ILOG", hint: "Means 'River'" },
+                { word: "BATA", hint: "Means 'Child'" },
+                { word: "TAO", hint: "Means 'Person'" },
+                { word: "LAHI", hint: "Means 'Race' or 'Ethnicity'" },
+                { word: "GABI", hint: "Means 'Night' or 'Taro'" },
+                { word: "ARAW", hint: "Means 'Day' or 'Sun'" },
+                { word: "TUBIG", hint: "Means 'Water'" },
+                { word: "KAHOY", hint: "Means 'Wood'" },
+                { word: "SULONG", hint: "Means 'Forward' or 'Advance'" },
+                { word: "BARKADA", hint: "Means 'Group of friends'" },
+                { word: "LAKBAY", hint: "Means 'Travel' or 'Journey'" },
+                { word: "SULAT", hint: "Means 'Letter' or 'Writing'" },
+                { word: "TULONG", hint: "Means 'Help'" }
+            ];
+
+            // Constants
+            const BOARD_SIZE = 25;
+            const BOARD_COLS = 5;
+            const HINT_DELAY_MS = 5000;
+
+            // State variables
+            let boardLetters = new Array(BOARD_SIZE).fill(null); // {letter, wordIndex, used} or null
+            let foundWords = new Set();
+            let currentSelection = []; // {index, letter}
+            let availableLettersQueue = []; // letters from words not yet found
+            let hintTimeoutId = null;
+
+            // Elements
+            const boardEl = document.getElementById('board');
+            const typingAreaEl = document.getElementById('typingArea');
+            const submitBtn = document.getElementById('submitBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const hintEl = document.getElementById('hint');
+
+            // --- Initialize ---
+
+            // Convert wordsPool into a big letter queue, initially from first words progressively
+            function initAvailableLetters() {
+                availableLettersQueue = [];
+                wordsPool.forEach((obj, idx) => {
+                    for (const l of obj.word) {
+                        availableLettersQueue.push({ letter: l, wordIndex: idx });
+                    }
+                });
+                shuffleArray(availableLettersQueue);
+            }
+
+            // Shuffle utility
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            // Fill the board from availableLettersQueue progressively (max BOARD_SIZE letters)
+            function fillBoardInitial() {
+                for (let i = 0; i < BOARD_SIZE; i++) {
+                    if (!boardLetters[i]) {
+                        if (availableLettersQueue.length > 0) {
+                            boardLetters[i] = availableLettersQueue.shift();
+                        } else {
+                            // Filler random letter if no available
+                            boardLetters[i] = { letter: getRandomLetter(), wordIndex: -1 };
+                        }
+                    }
+                }
+            }
+
+            // Generate random letter (A-Z)
+            function getRandomLetter() {
+                const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                return letters.charAt(Math.floor(Math.random() * letters.length));
+            }
+
+            // Render board letters visually
+            function renderBoard() {
+                boardEl.innerHTML = "";
+                boardLetters.forEach((tile, idx) => {
+                    const div = document.createElement('div');
+                    div.classList.add('tile');
+                    div.textContent = tile ? tile.letter : '';
+                    div.dataset.index = idx;
+                    if (currentSelection.find(s => s.index === idx)) div.classList.add('selected');
+                    div.addEventListener('click', () => selectTile(idx));
+                    boardEl.appendChild(div);
+                });
+            }
+
+            // Select or deselect tile
+            function selectTile(idx) {
+                const alreadySelected = currentSelection.find(s => s.index === idx);
+                if (alreadySelected) {
+                    // Deselect
+                    currentSelection = currentSelection.filter(s => s.index !== idx);
+                } else {
+                    currentSelection.push({ index: idx, letter: boardLetters[idx].letter });
+                }
+                renderSelection();
+                renderBoard();
+                resetHintTimer();
+            }
+
+            // Render the current selection in typing area (draggable/reorderable)
+            function renderSelection() {
+                typingAreaEl.innerHTML = "";
+                currentSelection.forEach(({ index, letter }, i) => {
+                    const span = document.createElement('div');
+                    span.classList.add('letter');
+                    span.textContent = letter;
+                    span.dataset.index = index;
+                    span.title = "Click to remove";
+                    span.addEventListener('click', () => {
+                        // Remove from selection
+                        currentSelection = currentSelection.filter((_, ix) => ix !== i);
+                        renderSelection();
+                        renderBoard();
+                        resetHintTimer();
+                    });
+                    typingAreaEl.appendChild(span);
+                });
+            }
+
+            // Add letter from keyboard input
+            function addLetterFromKeyboard(char) {
+                // Find first unselected tile with that letter
+                const upperChar = char.toUpperCase();
+                for (let i = 0; i < boardLetters.length; i++) {
+                    if (
+                        boardLetters[i] &&
+                        boardLetters[i].letter === upperChar &&
+                        !currentSelection.find(s => s.index === i)
+                    ) {
+                        currentSelection.push({ index: i, letter: upperChar });
+                        renderSelection();
+                        renderBoard();
+                        resetHintTimer();
+                        break;
+                    }
+                }
+            }
+
+            // Remove last letter from selection (backspace)
+            function removeLastLetter() {
+                if (currentSelection.length) {
+                    currentSelection.pop();
+                    renderSelection();
+                    renderBoard();
+                    resetHintTimer();
+                }
+            }
+
+            // Clear selection completely
+            function clearSelection() {
+                currentSelection = [];
+                renderSelection();
+                renderBoard();
+                resetHintTimer();
+            }
+
+            // Check if the current selected word is in pool and not yet found
+            function checkCurrentWord() {
+                const guess = currentSelection.map(s => s.letter).join('');
+                if (!guess) return;
+                let foundIndex = -1;
+                for (let i = 0; i < wordsPool.length; i++) {
+                    if (
+                        wordsPool[i].word === guess &&
+                        !foundWords.has(i)
+                    ) {
+                        foundIndex = i;
+                        break;
+                    }
+                }
+                if (foundIndex === -1) {
+                    alert("${guess}" + "is not a correct word or already found.");
+                    return false;
+                }
+                return foundIndex;
+            }
+
+            // Remove letters of found word from board, cascade fall, refill board
+            function processFoundWord(foundIndex) {
+                foundWords.add(foundIndex);
+                // Remove the selected letters from boardLetters
+                // Mark them null (removed)
+                currentSelection.forEach(({ index }) => {
+                    boardLetters[index] = null;
+                });
+                currentSelection = [];
+                renderSelection();
+
+                // Animate falling + refill
+                cascadeFallAndRefill(() => {
+                    // Show success hint
+                    hintEl.textContent = `Tama! "${wordsPool[foundIndex].word}" - ${wordsPool[foundIndex].hint}`;
+                    resetHintTimer();
+                    // Check if game completed
+                    if (foundWords.size === wordsPool.length) {
+                        alert("Congrats! You found all words!");
+                    }
+                });
+            }
+
+            // Cascade falling: letters fall down to fill nulls, then refill from queue
+            function cascadeFallAndRefill(callback) {
+                // For each column, do cascade fall
+                for (let col = 0; col < BOARD_COLS; col++) {
+                    let colTiles = [];
+                    for (let row = 0; row < BOARD_COLS; row++) {
+                        colTiles.push(boardLetters[row * BOARD_COLS + col]);
+                    }
+                    // Filter out nulls
+                    colTiles = colTiles.filter(t => t !== null);
+                    // Add nulls at top to keep length 5
+                    while (colTiles.length < BOARD_COLS) colTiles.unshift(null);
+                    // Put back to boardLetters
+                    for (let row = 0; row < BOARD_COLS; row++) {
+                        boardLetters[row * BOARD_COLS + col] = colTiles[row];
+                    }
+                }
+
+                renderBoard();
+
+                // Delay then refill empty spots
+                setTimeout(() => {
+                    for (let i = 0; i < BOARD_SIZE; i++) {
+                        if (!boardLetters[i]) {
+                            if (availableLettersQueue.length > 0) {
+                                boardLetters[i] = availableLettersQueue.shift();
+                                // Animate fall-in
+                                const tileEl = boardEl.querySelector(`.tile[data-index='${i}']`);
+                                if (tileEl) {
+                                    tileEl.classList.add('falling');
+                                    setTimeout(() => tileEl.classList.remove('falling'), 400);
+                                }
+                            } else {
+                                // No more letters, fill random letter
+                                boardLetters[i] = { letter: getRandomLetter(), wordIndex: -1 };
+                            }
+                        }
+                    }
+                    renderBoard();
+                    if (callback) callback();
+                }, 500);
+            }
+
+            // Reset hint timer
+            function resetHintTimer() {
+                if (hintTimeoutId) clearTimeout(hintTimeoutId);
+                hintTimeoutId = setTimeout(() => {
+                    provideHint();
+                }, HINT_DELAY_MS);
+            }
+
+            // Provide hint for any not-yet found word
+            function provideHint() {
+                for (let i = 0; i < wordsPool.length; i++) {
+                    if (!foundWords.has(i)) {
+                        hintEl.textContent = `Hint: ${wordsPool[i].hint}`;
+                        return;
+                    }
+                }
+                hintEl.textContent = "";
+            }
+
+            // Keyboard events support
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace') {
+                    e.preventDefault();
+                    removeLastLetter();
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    submitWord();
+                } else {
+                    const char = e.key.toUpperCase();
+                    if (char.length === 1 && char >= 'A' && char <= 'Z') {
+                        addLetterFromKeyboard(char);
+                    }
+                }
+            });
+
+            // Submit button event
+            function submitWord() {
+                const foundIndex = checkCurrentWord();
+                if (foundIndex !== false && foundIndex !== -1) {
+                    processFoundWord(foundIndex);
+                }
+            }
+            submitBtn.addEventListener('click', submitWord);
+
+            // Clear button event
+            clearBtn.addEventListener('click', () => {
+                clearSelection();
+            });
+
+            const showAnswersBtn = document.getElementById('showAnswersBtn');
+            const answersContainer = document.getElementById('answersContainer');
+
+            showAnswersBtn.addEventListener('click', () => {
+                if (foundWords.size === 0) {
+                    answersContainer.textContent = "No words found yet.";
+                    return;
+                }
+                const foundList = Array.from(foundWords)
+                    .map(i => wordsPool[i].word)
+                    .join(', ');
+                answersContainer.textContent = `Found words: ${foundList}`;
+            });
+
+            // Modify provideHint to only show hint if currentSelection letters overlap with any unfound word letters
+            function provideHint() {
+                if (currentSelection.length === 0) {
+                    hintEl.textContent = "";
+                    return;
+                }
+
+                // Collect letters in current selection as a Set
+                const selectedLetters = new Set(currentSelection.map(s => s.letter));
+
+                for (let i = 0; i < wordsPool.length; i++) {
+                    if (!foundWords.has(i)) {
+                        // Check if any letter of word is in selectedLetters
+                        const wordLetters = new Set(wordsPool[i].word.split(''));
+                        const intersect = [...wordLetters].some(letter => selectedLetters.has(letter));
+                        if (intersect) {
+                            hintEl.textContent = `Hint: ${wordsPool[i].hint}`;
+                            return;
+                        }
+                    }
+                }
+                hintEl.textContent = "";
+            }
+
+            const showPossibleBtn = document.getElementById('showPossibleBtn');
+            const possibleWordsContainer = document.getElementById('possibleWordsContainer');
+
+            // Helper: check if a word can be formed from current board letters
+            function canFormWord(word) {
+                // Count letters on board
+                const boardLetterCounts = {};
+                for (const tile of boardLetters) {
+                    if (tile) {
+                        boardLetterCounts[tile.letter] = (boardLetterCounts[tile.letter] || 0) + 1;
+                    }
+                }
+
+                // Count letters in word
+                const wordLetterCounts = {};
+                for (const ch of word) {
+                    wordLetterCounts[ch] = (wordLetterCounts[ch] || 0) + 1;
+                }
+
+                // Check if board has enough letters for word
+                for (const ch in wordLetterCounts) {
+                    if (!boardLetterCounts[ch] || boardLetterCounts[ch] < wordLetterCounts[ch]) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // Shuffle letters on the board
+            function shuffleBoard() {
+                // Filter out non-null tiles
+                const lettersOnly = boardLetters.filter(t => t !== null);
+                for (let i = lettersOnly.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [lettersOnly[i], lettersOnly[j]] = [lettersOnly[j], lettersOnly[i]];
+                }
+
+                // Put shuffled letters back into boardLetters preserving nulls positions
+                let letterIdx = 0;
+                for (let i = 0; i < boardLetters.length; i++) {
+                    if (boardLetters[i] !== null) {
+                        boardLetters[i] = lettersOnly[letterIdx++];
+                    }
+                }
+                renderBoard();
+            }
+
+            // Main function to find possible words or reshuffle
+            function findPossibleWordsOrReshuffle(attempts = 0, maxAttempts = 10) {
+                const possibleWords = [];
+
+                for (let i = 0; i < wordsPool.length; i++) {
+                    if (!foundWords.has(i)) {
+                        if (canFormWord(wordsPool[i].word)) {
+                            possibleWords.push(wordsPool[i].word);
+                        }
+                    }
+                }
+
+                if (possibleWords.length === 0 && attempts < maxAttempts) {
+                    shuffleBoard();
+                    // Small delay for animation/UX
+                    setTimeout(() => {
+                        findPossibleWordsOrReshuffle(attempts + 1, maxAttempts);
+                    }, 500);
+                    return;
+                }
+
+                if (possibleWords.length === 0) {
+                    possibleWordsContainer.textContent = "No possible words found after reshuffling.";
+                } else {
+                    possibleWordsContainer.textContent = `Possible words: ${possibleWords.join(', ')}`;
+                }
+            }
+
+            showPossibleBtn.addEventListener('click', () => {
+                findPossibleWordsOrReshuffle();
+            });
+
+
+            // Initialize game
+            function init() {
+                initAvailableLetters();
+                fillBoardInitial();
+                renderBoard();
+                renderSelection();
+                hintEl.textContent = "";
+                resetHintTimer();
+            }
+
+            init();
+        })();
+    </script>
+
+</body>
+
+</html>

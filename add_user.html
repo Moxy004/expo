@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flat Firestore Structure with UID Increment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap" rel="stylesheet">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA_Rb-l3s025f8iE06DP3Yp0LRHFnyN_aQ",
+      authDomain: "pwa---dialektogo.firebaseapp.com",
+      projectId: "pwa---dialektogo",
+      storageBucket: "pwa---dialektogo.firebasestorage.app",
+      messagingSenderId: "97002418234",
+      appId: "1:97002418234:web:c890e48535d766b2a60503",
+      measurementId: "G-JJ5DJJF6NE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    function getNextUID() {
+      let currentUID = localStorage.getItem("currentUID");
+      if (!currentUID) {
+        currentUID = 1000001; // Start at 010000001
+      } else {
+        currentUID = parseInt(currentUID) + 1;
+      }
+      localStorage.setItem("currentUID", currentUID);
+      return String(currentUID).padStart(9, "0");
+    }
+
+    async function createFlatStructure() {
+      const userId = getNextUID();
+
+      // Create user profile
+      await setDoc(doc(db, "users", userId), {
+        hearts: 5,
+        XP: 0,
+        status: "active",
+        username: `user_${userId}`,
+        birthday: "2000-01-01",
+        email: `user${userId}@example.com`
+      });
+
+      const chapters = {
+        chapter1: {
+          section1: ["s1lesson1", "s1lesson2", "s1lesson3"],
+          section2: ["s2lesson1", "s2lesson2"],
+          section3: ["s3lesson1", "s3lesson2"]
+        },
+        chapter2: {
+          section1: ["s1lesson1", "s1lesson2"],
+          section2: ["s2lesson1", "s2lesson2"]
+        }
+      };
+
+      for (const [chapterId, sections] of Object.entries(chapters)) {
+        await setDoc(doc(db, "userChapters", `${userId}_${chapterId}`), {
+          userId,
+          chapterId,
+          status: "locked"
+        });
+
+        for (const [sectionId, lessons] of Object.entries(sections)) {
+          await setDoc(doc(db, "userSections", `${userId}_${chapterId}_${sectionId}`), {
+            userId,
+            chapterId,
+            sectionId,
+            status: "locked"
+          });
+
+          for (const lessonId of lessons) {
+            await setDoc(doc(db, "userLessons", `${userId}_${chapterId}_${sectionId}_${lessonId}`), {
+              userId,
+              chapterId,
+              sectionId,
+              lessonId,
+              status: "locked"
+            });
+          }
+        }
+      }
+
+      alert(`✅ User ${userId} structure created!`);
+    }
+
+    window.createFlatStructure = createFlatStructure;
+  </script>
+</head>
+<body>
+  <h2>Create Firestore User Structure</h2>
+  <button onclick="createFlatStructure()">Create Next User</button>
+</body>
+</html>

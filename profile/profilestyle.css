@@ -1,0 +1,507 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Caprasimo', serif;
+}
+
+body {
+  background: linear-gradient(to bottom, #179EFF 0%, #179EFF 50%, #ffffff 90%);
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 50px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.blue {
+  color: #0077cc;
+  font-size: 30px;
+}
+
+.orange {
+  color: #f4a300;
+  font-size: 30px;
+}
+
+.lang-selector {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lang-selector img {
+  height: 20px;
+}
+
+/* Main Section */
+.profile-section {
+  padding: 20px 40px;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.user-img {
+  height: 80px;
+  border-radius: 50%;
+}
+
+.user-info .username {
+  font-size: 28px;
+  color: #0077cc;
+}
+
+.user-info .email {
+  color: #aa3a62;
+  font-weight: bold;
+}
+
+.user-info .plan {
+  color: gray;
+}
+
+/* Lesson Sections */
+.lesson-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+}
+
+.box h2 {
+  color: #f4a300;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin: 10px 0;
+  color: #aa3a62;
+}
+
+.lesson-num {
+  font-weight: bold;
+  
+  color: #f4a300;
+}
+.wrappser{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin: 5px;
+}
+.locked {
+  color: lightgray;
+}
+
+.end-list {
+  color: gray;
+}
+
+/* Avatar */
+.avatar-section {
+    display:flex;
+  background: #b73164;
+  color: #f4a300;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.avatar-section h2 {
+  color: #f4a300;
+}
+.character_wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-img {
+  height: max-content;
+  margin: 10px 0;
+  width: max-content;
+}
+
+.edit-btn {
+  background: #f4a300;
+  color: #b73164;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Bottom Nav */
+.lesson-feedback {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 0px 30px 10px; 
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  overflow: visible;
+} 
+
+.lesson-face {
+  background-color: #fff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  margin-top: -20px;
+  overflow: hidden; 
+}
+
+.lesson-face img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+/*avatar */
+.avatar-dialog.hidden {
+  display: none;
+}
+
+.avatar-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+  z-index: 999;
+}
+
+.dialog-box {
+  background: linear-gradient(to bottom, #179EFF, #179EFF, #ffffff);
+  width: 90%;
+  max-width: 1100px;
+  height: 600px;
+  display: flex;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+  border: 4px solid #179EFF;
+}
+
+.close-dialog {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.inventory-section {
+  font-size: 18px;
+  width: 50%;
+  padding: 25px;
+  background: #f1f9ff;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #179EFF;
+}
+
+.preview-section {
+  width: 50%;
+  position: relative;
+  background: linear-gradient(to bottom, #179EFF 10%, #ffffff 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-img-preview {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  user-select: none;
+}
+
+/* Overlay container */
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* let preview img get mouse events except overlays */
+}
+
+/* Each overlay image */
+
+
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 12px 20px;
+  background: #cceaff;
+  border: 2px solid #179EFF;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #003a63;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: #b3e0ff;
+}
+
+.tab-btn.active {
+  background: #179EFF;
+  color: white;
+}
+
+.tab-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 6px;
+  border: 2px solid #cceaff;
+  background: linear-gradient(to top, #dbf0ff 10%, #ffffff 100%);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+.tab-content.hidden {
+  display: none;
+}
+
+/* item */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* exactly 3 columns */
+  gap: 16px;
+}
+
+.item {
+  position: relative;      /* keep relative positioning */
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f0faff;
+  border: 2px solid #179EFF;
+  border-radius: 10px;
+  padding: 16px; /* a bit more padding for bigger size */
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.item.active {
+  border-color: #0077cc;
+  box-shadow: 0 0 8px #179EFF;
+  background: #e0f0ff;
+}
+
+
+
+.item:hover {
+  border-color: #006bb3;
+  transform: scale(1.05);
+}
+
+.item img {
+   display: block;          /* remove inline gaps */
+  margin: 0 auto 10px;     /* center horizontally with auto left/right margin */
+  transition: transform 0.3s;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-bottom: 10px;
+
+}
+#top .item img {
+  transform-origin: center center;
+  transform: scale(2);
+}
+
+#bottom .item img {
+  transform-origin: center bottom;
+  transform: scale(2.3);
+}
+
+#hair .item img {
+  transform-origin: center top;
+  transform: scale(1.5);
+}
+
+#bangs .item img {
+  transform-origin: center top;
+  transform: scale(1.8);
+}
+
+#footwear .item img {
+  transform-origin: center bottom;
+  transform: scale(2.3);
+}
+
+.item span {
+  font-size: 16px; /* bigger text */
+  text-align: center;
+  color: #003a63;
+}
+
+
+.preview-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.preview-buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.preview-buttons button {
+  padding: 14px 28px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #179EFF;
+  color: white;
+  font-weight: bold;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.preview-buttons button:hover {
+  background-color: #0077cc;
+  transform: scale(1.05);
+}
+
+
+
+
+
+/*Progress bar*/
+/* .circle-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-wrapper circle-progress {
+  width: 100%;
+  height: 100%;
+}
+
+.circle-center-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-97%, -97%);
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  z-index: 1;
+} */
+circle-progress::part(base) {
+					width: 4rem; 
+          height: auto;
+          
+} 
+
+circle-progress::part(value) {
+					stroke-width: 6px;
+					stroke: #179EFF;
+					stroke-linecap: round;
+          
+}
+circle-progress::part(circle) {
+					stroke-width: 6px;
+          
+				}
+
+        circle-progress::part(text) {
+					font-size: 1.5rem;
+          font-family: 'Caprasimo', serif;
+				}

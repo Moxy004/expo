@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up | DialektoGO</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Hammersmith+One&display=swap"
+        rel="stylesheet" />
+
+        <style>
+    body {
+      text-align: center;
+    }
+
+    h1 {
+      padding-top: 20px;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    #hint {
+      margin-bottom: 20px;
+      font-style: italic;
+      color: #ccc;
+    }
+
+    #board {
+      display: grid;
+      gap: 2px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .tile {
+      width: 60px;
+      height: 50px;
+      border: 2px solid #555;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      text-transform: uppercase;
+      font-weight: bold;
+      background-color: #121213;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .tile.flip {
+      animation: flip 0.5s forwards;
+    }
+
+    @keyframes flip {
+      0% {
+        transform: rotateX(0);
+      }
+      50% {
+        transform: rotateX(90deg);
+        background-color: #121213;
+      }
+      100% {
+        transform: rotateX(0);
+      }
+    }
+
+    .correct {
+      background-color: #538d4e;
+      border-color: #538d4e;
+    }
+
+    .present {
+      background-color: #b59f3b;
+      border-color: #b59f3b;
+    }
+
+    .absent {
+      background-color: #3a3a3c;
+      border-color: #3a3a3c;
+    }
+
+    #keyboard {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .key {
+      padding: 10px;
+      background-color: #818384;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .key.correct {
+      background-color: #538d4e;
+    }
+
+    .key.present {
+      background-color: #b59f3b;
+    }
+
+    .key.absent {
+      background-color: #3a3a3c;
+    }
+
+    #result {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="../images/logo.png" alt="Logo" />
+            <span class="title">
+                <span class="blue">Dialekto</span><span class="orange">GO</span>
+            </span>
+        </div>
+        <div class="lang-selector">
+            <img src="https://img.icons8.com/ios-filled/50/000000/globe--v1.png" alt="Language" />
+            <select>
+                <option>ENG</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+    </div>
+
+    
+  <h1>Tagalog Wordle</h1>
+  <div id="hint"></div>
+  <div id="board"></div>
+  <div id="keyboard"></div>
+  <div id="result"></div>
+
+  <script>
+    const levels = [
+      { word: "puso", hint: "Bahagi ng katawan na sumisimbolo ng pagmamahal" },
+      { word: "ulan", hint: "Ito ay bumabagsak mula sa langit" },
+      { word: "gabi", hint: "Kabaligtaran ng araw" },
+      { word: "bata", hint: "Kabataan o anak" },
+      { word: "araw", hint: "Ito ay sumisikat tuwing umaga" }
+    ];
+
+    const rows = 6;
+    let currentLevel = 0;
+    let word = levels[currentLevel].word.toLowerCase();
+    let guesses = [];
+    let currentRow = 0;
+    let currentCol = 0;
+
+    const board = document.getElementById("board");
+    const hint = document.getElementById("hint");
+    const result = document.getElementById("result");
+    const keyboard = document.getElementById("keyboard");
+
+    const letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
+    function initKeyboard() {
+      keyboard.innerHTML = "";
+      [...letters].forEach((letter) => {
+        const key = document.createElement("button");
+        key.className = "key";
+        key.textContent = letter;
+        key.onclick = () => handleKey(letter);
+        keyboard.appendChild(key);
+      });
+
+      // Enter and Backspace keys
+      const enterKey = document.createElement("button");
+      enterKey.className = "key";
+      enterKey.textContent = "Enter";
+      enterKey.style.gridColumn = "span 2";
+      enterKey.onclick = () => handleKey("Enter");
+
+      const backspaceKey = document.createElement("button");
+      backspaceKey.className = "key";
+      backspaceKey.textContent = "⌫";
+      backspaceKey.style.gridColumn = "span 2";
+      backspaceKey.onclick = () => handleKey("Backspace");
+
+      keyboard.appendChild(enterKey);
+      keyboard.appendChild(backspaceKey);
+    }
+
+    function initBoard() {
+      board.innerHTML = "";
+      result.textContent = "";
+      hint.textContent = `Hint: ${levels[currentLevel].hint}`;
+      word = levels[currentLevel].word.toLowerCase();
+      board.style.gridTemplateColumns = `repeat(${word.length}, 60px)`;
+
+      guesses = Array.from({ length: rows }, () => Array(word.length).fill(""));
+
+      for (let i = 0; i < rows * word.length; i++) {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        board.appendChild(tile);
+      }
+
+      currentRow = 0;
+      currentCol = 0;
+    }
+
+    function updateBoard() {
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < word.length; col++) {
+          const tile = board.children[row * word.length + col];
+          tile.textContent = guesses[row][col];
+        }
+      }
+    }
+
+    function colorKey(letter, status) {
+      const key = [...keyboard.children].find(k => k.textContent.toUpperCase() === letter.toUpperCase());
+      if (!key || key.classList.contains("correct")) return;
+      if (status === "correct" || (status === "present" && !key.classList.contains("present"))) {
+        key.className = `key ${status}`;
+      } else if (status === "absent" && !key.classList.contains("present") && !key.classList.contains("correct")) {
+        key.className = "key absent";
+      }
+    }
+
+    function checkGuess() {
+      const guess = guesses[currentRow].join("").toLowerCase();
+      const guessArr = guess.split("");
+      const wordArr = word.split("");
+      const tileOffset = currentRow * word.length;
+
+      const letterUsed = Array(word.length).fill(false);
+
+      // First pass: correct
+      for (let i = 0; i < word.length; i++) {
+        const tile = board.children[tileOffset + i];
+        tile.classList.add("flip");
+        if (guessArr[i] === wordArr[i]) {
+          tile.classList.add("correct");
+          colorKey(guessArr[i], "correct");
+          letterUsed[i] = true;
+        }
+      }
+
+      // Second pass: present or absent
+      for (let i = 0; i < word.length; i++) {
+        const tile = board.children[tileOffset + i];
+        if (tile.classList.contains("correct")) continue;
+
+        let found = false;
+        for (let j = 0; j < word.length; j++) {
+          if (!letterUsed[j] && guessArr[i] === wordArr[j]) {
+            found = true;
+            letterUsed[j] = true;
+            break;
+          }
+        }
+
+        if (found) {
+          tile.classList.add("present");
+          colorKey(guessArr[i], "present");
+        } else {
+          tile.classList.add("absent");
+          colorKey(guessArr[i], "absent");
+        }
+      }
+
+      if (guess === word) {
+        result.textContent = "🎉 Tama! Pupunta sa susunod...";
+        setTimeout(() => {
+          currentLevel++;
+          if (currentLevel < levels.length) {
+            initBoard();
+            initKeyboard();
+          } else {
+            result.textContent = "🎉 Natapos mo lahat ng salita!";
+          }
+        }, 2000);
+      } else {
+        currentRow++;
+        currentCol = 0;
+        if (currentRow >= rows) {
+          result.textContent = `❌ Ang tamang salita ay "${word.toUpperCase()}".`;
+          setTimeout(() => {
+            currentLevel++;
+            if (currentLevel < levels.length) {
+              initBoard();
+              initKeyboard();
+            } else {
+              result.textContent = "🎉 Natapos mo lahat ng salita!";
+            }
+          }, 3000);
+        }
+      }
+    }
+
+    function handleKey(key) {
+      if (result.textContent.includes("Tama") || result.textContent.includes("Mali")) return;
+
+      if (key === "Enter") {
+        if (currentCol === word.length) {
+          checkGuess();
+        }
+      } else if (key === "Backspace" || key === "⌫") {
+        if (currentCol > 0) {
+          currentCol--;
+          guesses[currentRow][currentCol] = "";
+          updateBoard();
+        }
+      } else if (/^[a-zA-ZñÑ]$/.test(key) && currentCol < word.length) {
+        guesses[currentRow][currentCol] = key.toUpperCase();
+        currentCol++;
+        updateBoard();
+      }
+    }
+
+    document.addEventListener("keydown", (e) => handleKey(e.key));
+
+    // Init everything
+    initBoard();
+    initKeyboard();
+  </script>
+
+</body>
+</html>

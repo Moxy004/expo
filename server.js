@@ -1,8 +1,10 @@
-require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const { Groq } = require('groq-sdk');
 const path = require('path');
+require('dotenv').config();
+
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -61,3 +63,5 @@ app.post('/chat', async (req, res) => {
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });
+
+console.log('Groq Key:', process.env.GROQ_API_KEY); // Add temporarily

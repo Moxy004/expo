@@ -5,28 +5,41 @@ const { Groq } = require('groq-sdk');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 8080;  // Use dynamic port
+const port = process.env.PORT || 8080;
 
-// Enable CORS for your frontend domain
-app.use(cors({ origin: 'https://dialektogo.web.app' }));
+// Allowed origins for CORS
+const allowedOrigins = [
+  'https://dialektogo.web.app',
+  'http://localhost:8080',
+  'https://expo-production-aab4.up.railway.app'
+];
+
+// CORS middleware with dynamic origin check
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow non-browser requests like Postman
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname))); // To serve home.html
+app.use(express.static(path.join(__dirname))); // To serve your frontend files (like home.html)
 
-// Initialize Groq with your API key
+// Initialize Groq client with your API key
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-// Test endpoint to check if the backend is working
+// Test endpoint
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from backend!' });
 });
-
-// Handle chat requests to the /chat endpoint
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
 
   try {
-    // Request chat completion from Groq API
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
@@ -38,24 +51,23 @@ app.post('/chat', async (req, res) => {
           content: userMessage
         }
       ],
-      model: "llama3-8b-8192", // safer default
+      model: "mixtral-8x7b-32768",  // 👈 Updated model here
       temperature: 1,
       max_completion_tokens: 1024,
       top_p: 1,
       stream: false
     });
 
-    // Send the chat reply to the frontend
     const fullReply = chatCompletion.choices[0].message.content;
     res.json({ reply: fullReply });
 
   } catch (error) {
     console.error('Groq API error:', error);
-    res.status(500).json({ error: 'Groq API request failed' });
+    res.status(500).json({ error: error.message || 'Groq API request failed' });
   }
 });
 
-// Start the server
+
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
 });

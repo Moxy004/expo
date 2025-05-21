@@ -14,17 +14,7 @@ const allowedOrigins = [
   'https://expo-production-aab4.up.railway.app'
 ];
 
-// CORS middleware with dynamic origin check
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow non-browser requests like Postman
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
+app.use(cors());
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname))); // To serve your frontend files (like home.html)
@@ -36,6 +26,7 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from backend!' });
 });
+
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
 
@@ -51,7 +42,7 @@ app.post('/chat', async (req, res) => {
           content: userMessage
         }
       ],
-      model: "mixtral-8x7b-32768",  // 👈 Updated model here
+      model: "mixtral-8x7b-32768",
       temperature: 1,
       max_completion_tokens: 1024,
       top_p: 1,
@@ -62,11 +53,10 @@ app.post('/chat', async (req, res) => {
     res.json({ reply: fullReply });
 
   } catch (error) {
-    console.error('Groq API error:', error);
+    console.error('❌ Groq API error:', error); // <- Add detailed logging
     res.status(500).json({ error: error.message || 'Groq API request failed' });
   }
 });
-
 
 app.listen(port, () => {
   console.log(`🚀 Server running at http://localhost:${port}`);
